@@ -6,17 +6,17 @@ print("Day one challenge")
 file = open('dayone.txt', 'r')
 Lines = file.readlines()
  
-isFirstLine = True
 count = 0
-prevNum = 0
-for line in Lines:
+prevNum = int(Lines[0])
+for i in range(1, len(Lines)):
     # Convert line from str to int
-    line = int(line)
-    if (isFirstLine):
-        isFirstLine = False
-    elif (line - prevNum > 0):
-        count += 1
+    line = int(Lines[i])
     
+    # Check if there is an increase
+    if (line - prevNum > 0):
+        count += 1
+
+    # Update the previous number 
     prevNum = line
 
 print("The answer is {}".format(count))
