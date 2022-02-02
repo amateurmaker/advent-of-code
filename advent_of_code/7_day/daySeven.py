@@ -1,10 +1,13 @@
 
 #! /usr/bin/env/ python3
+from calendar import c
 import copy
 from itertools import count
 from lib2to3.pytree import convert
 import sys
 from collections import defaultdict
+import statistics
+import math
 print("Day five challenge")
 
 # Open the file and read it
@@ -44,38 +47,36 @@ def convertStringToInt(data):
         new_list.append(int(element))
     return new_list
 
-def multiplyFish():
-    global fishMap
-    # Instead of making a flat list create a dictionary to clump similar fish states together
-    updatedFishMap = defaultdict(int)  
-    
-    # Go to each fish to change its state, take note that [fish-1] could possibly add a new key which is not allowed
-    # while iterating over fish map, hence use defaultdict as a temporary storage to add keys first
-    # then transfer the value back to fishMap                                            
-    for fish, count in fishMap.items():
-        if fish == 0:                           # Take all fishes that need to reproduce
-            updatedFishMap[6] += count          # Reset their reproduction date by changing their state
-            updatedFishMap[8] += count          # Add all the fishes offspring to the highest state
-        else:
-            updatedFishMap[fish-1] += count     # Move all fish to the state below theirs
+def getList(data):
+    for line in data:
+        return (line.split(','))
 
-        fishMap = updatedFishMap                # Update the main list
+def getInt(data):
+    new_lst = []
+    for element in data:
+        new_lst.append(int(element))
+    return new_lst
 
+def calculateFuelBasedOnMeadian(data):
+    fuel = 0
+    for element in data:
+        fuel += abs(element - median)
+    return fuel
 
-for line in Lines:
-    line_arr = convertString(line)
-    line_arr = convertStringToInt(line_arr)
+def calculateFuelBasedOnMean(data):
+    fuel = 0
+    for element in data:
+        for i in range(abs(element - mean)):
+            fuel += i + 1
+    return fuel
 
-fishMap = defaultdict(int) 
-for fish in line_arr:                            
-    if fish not in fishMap:                  
-        fishMap[fish] = 0                    
-    fishMap[fish] += 1   
-
-for i in range(256):
-    multiplyFish()
-
-print(f"The answer for part 1 is: {sum(fishMap.values())}")
+new_list = getInt(getList(Lines))
+median = int(statistics.median(new_list))
+# Whether to use floor or ceiling was a guess
+mean = math.floor(statistics.mean(new_list))
+print(f"The original mean is: {statistics.mean(new_list)} and the new mean is: {round(statistics.mean(new_list))}")
+print(f"The answer for part 1 is: {calculateFuelBasedOnMeadian(new_list)}")
+print(f"The answer for part 2 is: {calculateFuelBasedOnMean(new_list)}")
 
 # Extra code that could be useful
 # oxy_Lines_prev = copy.deepcopy(Lines)
