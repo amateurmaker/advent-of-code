@@ -67,7 +67,7 @@ for element in new_list:
         sub_arr.append(number)
     new_new_list.append(sub_arr)
 
-print(new_new_list)
+# print(new_new_list)
 
 last_x = len(new_new_list) - 1
 last_y = len(new_new_list[0]) - 1
@@ -78,50 +78,140 @@ for i in range(len(new_new_list)):
         number = new_new_list[i][j]
         if (i == 0 and j == 0):
             if (number < new_new_list[i + 1][j] and number < new_new_list[i][j + 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("top left corner")
         elif (i == last_x and j == 0):
             if (number < new_new_list[i - 1][j] and number < new_new_list[i][j - 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("top right corner")
         elif (i == last_x and j == last_y):
             if (number < new_new_list[i - 1][j] and number < new_new_list[i][j - 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("bottom right")
         elif (i == 0 and j == last_y):
             if (number < new_new_list[i - 1][j] and number < new_new_list[i][j - 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("bottom left")
         elif (i == 0):
             if (number < new_new_list[i][j - 1] and number < new_new_list[i][j + 1] and number < new_new_list[i+1][j]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("top wall")
         elif (i == last_x):
             if (number < new_new_list[i][j - 1] and number < new_new_list[i][j + 1] and number < new_new_list[i-1][j]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("bottom wall")
         elif (j == last_y):
             if (number < new_new_list[i - 1][j] and number < new_new_list[i + 1][j] and number < new_new_list[i][j - 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("right wall")
         elif (j == 0):
             if (number < new_new_list[i - 1][j] and number < new_new_list[i + 1][j] and number < new_new_list[i][j + 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
         else:
             if (number < new_new_list[i - 1][j] and number < new_new_list[i + 1][j] and number < new_new_list[i][j - 1] and number < new_new_list[i][j + 1]):
-                print(f"This number is the lowest: {number}")
+                # print(f"This number is the lowest: {number}")
                 count += int(number) + 1
             # print("left wall")
 
 print(f"the part 1 number is: {count}")
+
+
+def checkadjascent(i, j):
+    global new_new_list
+    answer = 0
+
+    if (i < 0 or i > last_x):
+        return 0
+    
+    if (j < 0 or j > last_y):
+        return 0
+
+    # to indicate that this has been checked
+    if (int(new_new_list[i][j]) == 100):
+        return 0
+
+    # to indicate a boundary
+    if (int(new_new_list[i][j]) == 9):
+        return 0
+
+    # print(f"the index is: {i} and {j} with the number {new_new_list[i][j]}")
+    
+    # mark is as checked for future iterations
+    new_new_list[i][j] = 100
+    
+    answer += 1
+    if (i == 0):
+        if (j == 0):
+            answer += checkadjascent(i + 1, j)
+            answer += checkadjascent(i, j + 1)
+        elif (j == last_y):
+            answer += checkadjascent(i - 1, j)
+            answer += checkadjascent(i, j + 1)
+        else:
+            answer += checkadjascent(i - 1, j)
+            answer += checkadjascent(i + 1, j)
+            answer += checkadjascent(i, j + 1)
+    elif (i == last_x):
+        if (j == 0):
+            answer += checkadjascent(i - 1, j)
+            answer += checkadjascent(i, j + 1)
+        elif (j == last_y):
+            answer += checkadjascent(i - 1, j)
+            answer += checkadjascent(i, j - 1)
+        else:
+            answer += checkadjascent(i - 1, j)
+            answer += checkadjascent(i, j - 1)
+            answer += checkadjascent(i, j + 1)
+    else:
+        answer += checkadjascent(i + 1, j)
+        answer += checkadjascent(i - 1, j)
+        answer += checkadjascent(i, j - 1)
+        answer += checkadjascent(i, j + 1)
+
+    return answer
+
+
+
+count = []
+for i in range(len(new_new_list)):
+    for j in range(len(new_new_list[i])):
+        number = new_new_list[i][j]
+        if (number != 9 and number != 100):
+            num = checkadjascent(i, j)
+            if (num != 0):
+                count.append(int(num))
+
+max_three = [count[0], count[0], count[0]]
+print(count)
+for thing in count:
+    if (thing > max_three[2]):
+        max_three[0] = max_three[1]
+        max_three[1] = max_three[2]
+        max_three[2] = thing
+        continue
+
+    if (thing > max_three[1]):
+        max_three[0] = max_three[1]
+        max_three[1] = thing
+
+    if (thing > max_three[0]):
+        max_three[0] = thing
+
+    
+ans = 1
+print(max_three)
+for thing in max_three:
+    ans *= thing
+
+print(f"the part two answer is: {ans}")
 
 # Extra code that could be useful
 # oxy_Lines_prev = copy.deepcopy(Lines)
