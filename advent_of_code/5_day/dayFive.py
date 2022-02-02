@@ -2,21 +2,14 @@
 #! /usr/bin/env/ python3
 import copy
 from itertools import count
-from pickle import FALSE
-from re import A
 import sys
-print("Day four challenge")
+print("Day five challenge")
 
 # Open the file and read it
-file = open('dayfour.txt', 'r')
+file = open('dayfive.txt', 'r')
 Lines = file.readlines()
 
-# Obtain the moves
-moves = Lines[0]
-
 # Obtain the board information
-Bingo = []
-Board = []
 def convertStringtoList(string):
     return list(string.split(" "))
 
@@ -26,145 +19,104 @@ def returnMoves(data):
 def removeEmptyStringsFromList(data):
     return [string for string in data if string != ""]
 
-for index in range(1, len(Lines)):
-    if (Lines[index] == '\n'):
-        Board.append(copy.deepcopy(Bingo))
-        Bingo.clear()
-    else:
-        rows_as_strings_in_list = convertStringtoList(Lines[index].rstrip("\n"))
-        final_rows_as_strings_in_list = removeEmptyStringsFromList(rows_as_strings_in_list)
-        Bingo.append(final_rows_as_strings_in_list)
+def printVerticalorHorizontalLines(data):
+    max_x = 0
+    max_y = 0
 
-Board.append(copy.deepcopy(Bingo))
-del Board[0:1]
-
-def printBoard(data):
-    for bingo in data:
-        print(bingo)
-
-def countTheBoard(brd, num):
-    count = 0
-    for row in brd:
-        for element in row:
-            if (element != 'x'):
-                count += int(element)
-    partOne = count - int(num)
-    partTwo = int(num)
-    print(f"The answer for part 1 is: {partOne * partTwo}")
-    sys.exit(0)
-
-def clearBoard():
-    return []
-
-
-def checkRows(data, Board):
-    for board in Board:
-        for row in board:
-            try:
-                for row_index in row:
-                    if (row_index == data):
-                        row_index = 'x'
-                
-                number = row.index(data)
-
-                if (row.count('x') == 4):
-                    print(f"THIS IS IT: {Board}")
-                    countTheBoard(board, data)
-                    # Count up the rest of the elements and print the answer
-
-                count = 0
-                for local_row in board:
-                    if (local_row[number] == 'x'):
-                        count += 1
-
-                    if (count == 4):
-                        countTheBoard(board, data) 
-            except ValueError as e:
-                continue
-            
-            row[number] = 'x'
-
-def partTwoAnswer(brd, data):
-    for board in brd:
-        if board:
-            count = 0
-            for row in board:
-                for element in row:
-                    if (element != 'x'):
-                        count += int(element)
-            partOne = count
-            partTwo = int(data)
-            print(f"The answer for part 2 is: {partOne * partTwo}")
-            sys.exit(0)
-
-
-def checkIfLastBoard(brd, data):
-    count = 0
-    for board in brd:
-        if board:
-            count += 1
+    lines = []
     
-    if count == 1:
-        partTwoAnswer(brd, data)
-        sys.exit(0)
+    for element in data:
+        element_arr = element.split("->")
+        x_y_0 = element_arr[0].split(",")
+        x_y_1 = element_arr[1].split(",")
 
-def evaluateRows(data, Board, some_bool):
-    for index in range(len(Board)):
-        skip_board = False
-        for row in Board[index]:
-            if (skip_board):
-                continue
+        x0 = int(x_y_0[0])
+        y0 = int(x_y_0[1])
 
-            try:
-                for row_index in range(len(row)):
-                    if (row[row_index] == data):
-                        row[row_index] = 'x'
-                        if (row.count('x') == 5):
-                            checkIfLastBoard(Board, data)
-                            Board[index] = []
-                            skip_board = True
-                            break
-
-                    count = 0
-                    for local_row in Board[index]:
-                        if (local_row[row_index] == 'x'):
-                            count += 1
-
-                        if (count == 5):
-                            checkIfLastBoard(Board, data)
-                            Board[index] = []
-                            skip_board = True
-                            break
-
-            except ValueError as e:
-                print("ERROR!")
-                continue
-            
+        start = [x0, y0]
         
+        x1 = int(x_y_1[0])
+        y1 = int(x_y_1[1])
+        end = [x1, y1]
 
-# Play Each Move
-bingo_numbers = returnMoves(moves)
-last_num = bingo_numbers[len(bingo_numbers) - 1]
-last_num_bool = False
+        line_points = [start, end]
 
-val = input("Enter either 1 or 2: ")
-if (val != '1' or val != '2'):
-    print("invalid input, defaulting to part 1")
-    val = "1"
-    
-if (val == "1"):
-    for num in bingo_numbers:
-        # This is for Part 1
-        checkRows(num, Board)
+        
+        
+        if (x0 > max_x):
+            max_x = x0
+        
+        if (x1 > max_x): 
+            max_x = x1
+
+        if (y0 > max_y):
+            max_y = y0
+        
+        if (y1 > max_y): 
+            max_y = y1
+
+        lines.append(line_points)
+
+    return max_x, max_y, lines
+
+max_x, max_y, lines = (printVerticalorHorizontalLines(Lines))
+
+# Form the sea bed
+arr = [[0 for i in range(max_x + 1)] for j in range(max_y + 1)]
+
+def findSmallest(uno, dos):
+    if (uno < dos):
+        return uno, dos
+    else:
+        return dos, uno
+
+val = input("Do you want the answer for part 1 or 2? ")
+val = int(val)
+if (val == 1 or val == 2):
+    pass
 else:
-    for num in bingo_numbers:
-        if (num == last_num):
-            print(f"this is the last number: {num}")
-            last_num_bool = True
-            break
-        else:
-            evaluateRows(num, Board, True)
+    print("invalid input, defaulting to part 1")
+    val = 1
+
+if (val == 1):
+    use_part_one = True
+else:
+    use_part_one = False
+
+# Iterate through the liens
+for line in lines:
+    # The x is flat
+    if (line[0][0] == line[1][0]):
+        # print(f"THe vertical flat line is: {line}")
+        first, second = findSmallest(line[0][1], line[1][1])
+        for i in range(first, second + 1):
+            arr[i][line[0][0]] += 1
+    
+    elif (line[0][1] == line[1][1]):
+        # print(f"THe horizontal flat line is: {line}")
+        first, second = findSmallest(line[0][0], line[1][0])
+        for i in range(first, second + 1):
+            arr[line[0][1]][i] += 1
+    elif (use_part_one == False):
+        # print(f"The line is slanted: {line}")
+        gradient = (line[0][1] - line[1][1])/(line[0][0] - line[1][0])
+        intercept = line[0][1] - gradient * line[0][0]
+        first, second = findSmallest(line[0][0], line[1][0])
+        for i in range(first, second + 1):
+            y = int((gradient * i) + intercept)
+            arr[y][i] += 1
+            # print(f"The x is: {i} and the y is: {y}")
+
+count = 0
+for row in arr:
+    for element in row:
+        if (element >= 2):
+            count +=1
+
+print(f"The answer for part 1 is: {count}") if use_part_one else print(f"The answer for part 2 is: {count}")
 
 # Extra code that could be useful
 # oxy_Lines_prev = copy.deepcopy(Lines)
 # carbon_Lines_prev = carbon_Lines_prev[0].rstrip("\n")
+# del Board[0:1]
+# if (row.count('x') == 5):
