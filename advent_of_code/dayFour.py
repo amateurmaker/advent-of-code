@@ -43,7 +43,6 @@ def printBoard(data):
         print(bingo)
 
 def countTheBoard(brd, num):
-    print(f"Counting the following: {brd}")
     count = 0
     for row in brd:
         for element in row:
@@ -62,9 +61,9 @@ def checkRows(data, Board):
     for board in Board:
         for row in board:
             try:
-                for lala in row:
-                    if (lala == data):
-                        lala = 'x'
+                for row_index in row:
+                    if (row_index == data):
+                        row_index = 'x'
                 
                 number = row.index(data)
 
@@ -84,15 +83,87 @@ def checkRows(data, Board):
                 continue
             
             row[number] = 'x'
+
+def partTwoAnswer(brd, data):
+    for board in brd:
+        if board:
+            count = 0
+            for row in board:
+                for element in row:
+                    if (element != 'x'):
+                        count += int(element)
+            partOne = count
+            partTwo = int(data)
+            print(f"The answer for part 2 is: {partOne * partTwo}")
+            sys.exit(0)
+
+
+def checkIfLastBoard(brd, data):
+    count = 0
+    for board in brd:
+        if board:
+            count += 1
+    
+    if count == 1:
+        partTwoAnswer(brd, data)
+        sys.exit(0)
+
+def evaluateRows(data, Board, some_bool):
+    for index in range(len(Board)):
+        skip_board = False
+        for row in Board[index]:
+            if (skip_board):
+                continue
+
+            try:
+                for row_index in range(len(row)):
+                    if (row[row_index] == data):
+                        row[row_index] = 'x'
+                        if (row.count('x') == 5):
+                            checkIfLastBoard(Board, data)
+                            Board[index] = []
+                            skip_board = True
+                            break
+
+                    count = 0
+                    for local_row in Board[index]:
+                        if (local_row[row_index] == 'x'):
+                            count += 1
+
+                        if (count == 5):
+                            checkIfLastBoard(Board, data)
+                            Board[index] = []
+                            skip_board = True
+                            break
+
+            except ValueError as e:
+                print("ERROR!")
+                continue
+            
         
 
 # Play Each Move
 bingo_numbers = returnMoves(moves)
 last_num = bingo_numbers[len(bingo_numbers) - 1]
-for num in bingo_numbers:
-    checkRows(num, Board)
+last_num_bool = False
 
-# printBoard(Board)
+val = input("Enter either 1 or 2: ")
+if (val != '1' or val != '2'):
+    print("invalid input, defaulting to part 1")
+    val = "1"
+    
+if (val == "1"):
+    for num in bingo_numbers:
+        # This is for Part 1
+        checkRows(num, Board)
+else:
+    for num in bingo_numbers:
+        if (num == last_num):
+            print(f"this is the last number: {num}")
+            last_num_bool = True
+            break
+        else:
+            evaluateRows(num, Board, True)
 
 # Extra code that could be useful
 # oxy_Lines_prev = copy.deepcopy(Lines)
