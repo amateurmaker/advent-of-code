@@ -4,7 +4,7 @@ import { day2 } from './day2'
 import { day3 } from './day3'
 import { day4 } from './day4'
 
-let rl = readline.createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });

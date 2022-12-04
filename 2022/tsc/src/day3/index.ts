@@ -25,14 +25,14 @@ const getPriority = (c: string): number => {
 }
 
 const checkBadge = (first: string, second: string, third: string): string => {
+    // Defining interface for object
+    interface Map {
+        [key: string]: number;
+     }
+     
     // Unsorted hash table should do the trick
-    let map:any  = {
-
-    };
-
-    let duplicates:any  = {
-
-    };
+    let map:Map  = {};
+    let duplicates:Map  = {};
 
     // Count characters in first string
     for (let i: number = 0; i < first.length; i++) {
