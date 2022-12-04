@@ -9,7 +9,14 @@ std::sort(vector.begin(), vector.end())
 ``` 
 - 
 ```c++
+// Takes 3 compulsory arguments
 std::accumulate(vector.begin() , vector.end(), 0);
+```
+
+-
+```c++
+// converts a std::string into an int 
+std::stoi("3");
 ```
 
 ## C++ data structures

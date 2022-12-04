@@ -2,8 +2,6 @@
 #! /usr/bin/env/ python3
 import copy
 from itertools import count
-from pickle import FALSE
-from re import A
 import sys
 print("Day four challenge")
 
