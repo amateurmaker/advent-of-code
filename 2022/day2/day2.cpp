@@ -119,7 +119,6 @@ int main(void)
     if (input_file.is_open())
     {
         std::string file_input;
-        std::vector<int> food;
         int sum = 0;
         int sum2 = 0;
         while (getline(input_file, file_input))
