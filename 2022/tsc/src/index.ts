@@ -1,6 +1,5 @@
-console.log('Hello world! recompiiled')
-
 import * as readline from 'readline';
+import { day1 } from './day1/day1'
 
 let rl = readline.createInterface({
     input: process.stdin,
@@ -11,6 +10,7 @@ const ask = () => {
     rl.question('Enter the day to run: [1/2/../q] ', (answer) => {
         switch (answer.toLowerCase()) {
             case '1':
+                day1();
                 console.log('Generating day1 answer ====');
                 break;
             case '2':
