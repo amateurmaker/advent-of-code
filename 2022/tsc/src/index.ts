@@ -2,6 +2,7 @@ import * as readline from 'readline';
 import { day1 } from './day1'
 import { day2 } from './day2'
 import { day3 } from './day3'
+import { day4 } from './day4'
 
 let rl = readline.createInterface({
     input: process.stdin,
@@ -22,6 +23,10 @@ const ask = () => {
             case '3':
                 console.log('Generating day3 answer ====');
                 day3();
+                break;
+            case '4':
+                console.log('Generating day4 answer ====');
+                day4();
                 break;
             case 'q':
                 console.log("Goodbye");

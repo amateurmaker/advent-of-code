@@ -1,6 +1,5 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import internal from 'stream';
 
 
 const check = (first: string, second: string): string => {
