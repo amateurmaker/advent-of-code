@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-// ✅ read file SYNCHRONOUSLY
+// read file SYNCHRONOUSLY
 const accumulate = ({ food }: { food?: Array<number> }): number => {
     let third_food: number = (food || []).length - 3
     let second_food: number = (food || []).length - 2
@@ -21,7 +21,7 @@ const syncReadFile = (filename: string) => {
     let food: Array<number> = [];
 
     splitted.map((value) => {
-        console.log(value); // 👉️ "hello world hello world ..."
+        console.log(value);
 
         if (value === '') {
             console.log("The string is empty")
