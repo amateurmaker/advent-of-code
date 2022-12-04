@@ -113,12 +113,10 @@ const syncReadFile = (filename: string) => {
     const splitted: Array<string> = result.split("\n");
 
     // Initialise some variables   
-    let sum = 1;
-    let sum2 = 1;
+    let sum: number = 1;
+    let sum2: number = 1;
 
     splitted.map((file_input) => {
-        console.log(file_input);
-
         const a: string = file_input[0];
         const b: string = file_input[2];
 
