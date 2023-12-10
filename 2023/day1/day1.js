@@ -49,7 +49,7 @@ const printResult = async () => {
     let result = await readLinesAsync("sample.txt");
     console.log(result)
 
-    result = await readLinesAsync("inputa.txt");
+    result = await readLinesAsync("p1.txt");
     console.log(result)
 };
 
