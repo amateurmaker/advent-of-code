@@ -41,6 +41,7 @@ fs.readFile(
             }
 
             if (pass) {
+                console.log(`The instructions are: ${i + 1}`)
                 const middle = instructions[i].length / 2
                 const idx = middle.toFixed(0) - 1
                 answer += parseInt(instructions[i][idx])
